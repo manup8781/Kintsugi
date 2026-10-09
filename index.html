@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Kintsugi: joyería para piercings y tatuajes de autor con una estética japonesa oscura.">
+  <title>Kintsugi — Tattoo & Piercing</title>
+  <link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="dynamic.css">
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <header class="site-header" id="inicio">
+    <a class="brand" href="#inicio" aria-label="Kintsugi, inicio">
+      <span class="brand-mark">金</span>
+      <span><b>KINTSUGI</b><small>TATTOO · PIERCING</small></span>
+    </a>
+    <nav class="desktop-nav" aria-label="Navegación principal">
+      <a href="#joyeria">Joyería</a><a href="#portfolio">Tatuajes</a><a href="#estudio">El estudio</a>
+    </nav>
+    <div class="header-actions">
+      <button class="cart-button" id="cartButton" aria-label="Abrir carrito">Bolsa <span id="cartCount">0</span></button>
+      <button class="menu-button" id="menuButton" aria-label="Abrir menú" aria-expanded="false"><i></i><i></i></button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy reveal">
+        <p class="eyebrow"><span></span> ESTUDIO DE ARTE CORPORAL</p>
+        <h1>Belleza que<br><em>deja marca.</em></h1>
+        <p class="hero-lede">Joyería seleccionada y tatuajes hechos con intención. Una fusión entre ritual japonés, precisión contemporánea y carácter propio.</p>
+        <div class="hero-cta">
+          <a class="button button-primary" href="#joyeria">Explorar joyería <span>↗</span></a>
+          <button class="text-link" data-open-booking>Reservar una cita <span>→</span></button>
+        </div>
+      </div>
+      <div class="hero-visual reveal">
+        <div class="sun-disc"></div>
+        <img src="assets/hero-kintsugi.png" alt="Cuenco de cerámica kintsugi reparado con oro">
+        <div class="vertical-type" aria-hidden="true">金継ぎ</div>
+        <div class="hero-seal">HAND<br>CRAFTED</div>
+      </div>
+      <a class="scroll-cue" href="#joyeria"><span>SCROLL</span><i></i></a>
+    </section>
+
+    <section class="manifesto" aria-label="Nuestra filosofía">
+      <div class="manifesto-symbol">美</div>
+      <p>No hacemos adornos.<br>Construimos <em>amuletos.</em></p>
+      <span>Precisión / Intención / Permanencia</span>
+    </section>
+
+    <section class="shop section" id="joyeria">
+      <div class="section-heading reveal">
+        <div><p class="eyebrow"><span></span> COLECCIÓN 01</p><h2>Joyería de autor</h2></div>
+        <p class="section-intro">Piezas pensadas para convivir con tu cuerpo. Titanio, acero y acabados pulidos en una colección de inspiración nocturna.</p>
+      </div>
+      <div class="shop-feature reveal">
+        <img src="assets/jewelry.png" alt="Colección de joyería para piercings sobre laca negra">
+        <div class="feature-note"><small>CURADURÍA KINTSUGI</small><strong>Detalles que hablan<br>sin pedir permiso.</strong></div>
+      </div>
+      <div class="filter-row" role="group" aria-label="Filtrar joyería">
+        <button class="filter active" data-filter="all">Todos</button>
+        <button class="filter" data-filter="oreja">Oreja</button>
+        <button class="filter" data-filter="nariz">Nariz</button>
+        <button class="filter" data-filter="cuerpo">Cuerpo</button>
+      </div>
+      <div class="product-grid" id="productGrid">
+        <article class="product-card reveal" data-category="oreja">
+          <div class="product-art art-sakura"><span class="product-badge">NUEVO</span><i>✦</i></div>
+          <div class="product-info"><div><small>TITANIO · OREJA</small><h3>Sakura Stud</h3></div><strong>$48</strong></div>
+          <button class="add-button" data-product="Sakura Stud" data-price="48">Añadir <span>＋</span></button>
+        </article>
+        <article class="product-card reveal" data-category="nariz">
+          <div class="product-art art-moon"><i>☾</i></div>
+          <div class="product-info"><div><small>ORO 14K · NARIZ</small><h3>Tsuki Ring</h3></div><strong>$72</strong></div>
+          <button class="add-button" data-product="Tsuki Ring" data-price="72">Añadir <span>＋</span></button>
+        </article>
+        <article class="product-card reveal" data-category="oreja cuerpo">
+          <div class="product-art art-chain"><span class="product-badge">LIMITADO</span><i>∞</i></div>
+          <div class="product-info"><div><small>ACERO · CADENA</small><h3>Kintsugi Chain</h3></div><strong>$65</strong></div>
+          <button class="add-button" data-product="Kintsugi Chain" data-price="65">Añadir <span>＋</span></button>
+        </article>
+        <article class="product-card reveal" data-category="cuerpo">
+          <div class="product-art art-drop"><i>♦</i></div>
+          <div class="product-info"><div><small>TITANIO · CUERPO</small><h3>Akai Drop</h3></div><strong>$54</strong></div>
+          <button class="add-button" data-product="Akai Drop" data-price="54">Añadir <span>＋</span></button>
+        </article>
+      </div>
+      <p class="demo-note">Colección y precios de muestra · Reemplázalos por tu catálogo real.</p>
+    </section>
+
+    <section class="portfolio section" id="portfolio">
+      <div class="section-heading light reveal">
+        <div><p class="eyebrow"><span></span> OBRA SELECCIONADA</p><h2>Tinta con historia</h2></div>
+        <p class="section-intro">Cada pieza nace de una conversación. Diseños originales que respetan el cuerpo, el símbolo y el tiempo.</p>
+      </div>
+      <div class="portfolio-grid real-work-grid" id="portfolioGrid" aria-live="polite">
+        <p class="portfolio-loading">Cargando obra seleccionada…</p>
+      </div>
+      <p class="demo-note on-dark">Portfolio real · Tatuajes realizados en Kintsugi.</p>
+    </section>
+
+    <section class="studio section" id="estudio">
+      <div class="studio-copy reveal">
+        <p class="eyebrow"><span></span> EL RITUAL</p>
+        <h2>Tu idea.<br>Nuestra técnica.<br><em>Una sola pieza.</em></h2>
+        <p>Desde la primera conversación hasta el cuidado posterior, cada paso está pensado para que te sientas escuchado, seguro y orgulloso del resultado.</p>
+        <div class="steps">
+          <div><b>壱</b><span><strong>Conversemos</strong><small>Idea, referencias y ubicación</small></span></div>
+          <div><b>弐</b><span><strong>Diseñamos</strong><small>Una pieza única para tu cuerpo</small></span></div>
+          <div><b>参</b><span><strong>Creamos</strong><small>Sesión, cuidado y seguimiento</small></span></div>
+        </div>
+      </div>
+      <div class="studio-visual reveal">
+        <div class="brush-circle"></div><span class="big-kanji">一期一会</span><small>UNA VEZ, UN ENCUENTRO</small>
+      </div>
+    </section>
+
+    <section class="cta-section">
+      <div class="petals" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+      <p class="eyebrow"><span></span> EMPECEMOS</p>
+      <h2>Tu próxima historia<br><em>empieza aquí.</em></h2>
+      <button class="button button-primary" data-open-booking>Reservar una consulta <span>↗</span></button>
+      <div class="contact-strip"><span>ESTUDIO PRIVADO</span><span>ATENCIÓN CON CITA PREVIA</span><a href="mailto:hola@kintsugi.studio">HOLA@KINTSUGI.STUDIO</a></div>
+    </section>
+  </main>
+
+  <footer><div class="brand"><span class="brand-mark">金</span><span><b>KINTSUGI</b><small>TATTOO · PIERCING</small></span></div><p>Arte corporal · Joyería · Intención</p><span>© 2026 — CON RESPETO POR EL OFICIO · <a href="admin.html">ADMIN</a></span></footer>
+
+  <aside class="cart-drawer" id="cartDrawer" aria-hidden="true">
+    <div class="drawer-head"><div><small>TU SELECCIÓN</small><h2>La bolsa</h2></div><button data-close-cart aria-label="Cerrar carrito">×</button></div>
+    <div class="cart-items" id="cartItems"><p class="empty-cart">Tu bolsa está vacía.<br><span>Encuentra una pieza que te hable.</span></p></div>
+    <div class="cart-footer"><div><span>Total</span><strong id="cartTotal">$0</strong></div><label class="buyer-name">Tu nombre<input id="buyerName" placeholder="¿Cómo te llamas?" autocomplete="name"></label><button class="button button-primary" id="checkoutButton">Pedir por WhatsApp <span>↗</span></button><small>Se abrirá WhatsApp con tu pedido listo para enviar a Kintsugi.</small></div>
+  </aside>
+  <div class="overlay" id="overlay"></div>
+
+  <div class="modal" id="bookingModal" role="dialog" aria-modal="true" aria-labelledby="bookingTitle" aria-hidden="true">
+    <button class="modal-close" data-close-booking aria-label="Cerrar">×</button>
+    <p class="eyebrow"><span></span> NUEVA CONSULTA</p><h2 id="bookingTitle">Cuéntanos tu idea</h2>
+    <form id="bookingForm">
+      <label>Nombre<input required name="name" placeholder="Tu nombre"></label>
+      <label>¿Qué buscas?<select name="service"><option>Tatuaje personalizado</option><option>Piercing</option><option>Joyería</option></select></label>
+      <label>Tu idea<textarea required name="idea" rows="4" placeholder="Estilo, tamaño, zona del cuerpo..."></textarea></label>
+      <label>Contacto<input required type="email" name="email" placeholder="tu@email.com"></label>
+      <button class="button button-primary" type="submit">Enviar consulta <span>↗</span></button>
+      <p class="form-status" id="formStatus"></p>
+    </form>
+  </div>
+  <div class="lightbox" id="lightbox" aria-hidden="true"><button aria-label="Cerrar imagen">×</button><img alt="Vista ampliada del tatuaje"></div>
+  <div class="mobile-menu" id="mobileMenu" aria-hidden="true"><a href="#joyeria">Joyería</a><a href="#portfolio">Tatuajes</a><a href="#estudio">El estudio</a><button data-open-booking>Reservar cita</button></div>
+  <script src="config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="script.js"></script>
+</body>
+</html>

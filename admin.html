@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Panel de contenido de Kintsugi.">
+  <title>Administración — Kintsugi</title>
+  <link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="admin.css"><link rel="stylesheet" href="admin-pill.css"><link rel="stylesheet" href="admin-supabase.css">
+</head>
+<body class="admin-body">
+  <div class="grain" aria-hidden="true"></div>
+  <section class="admin-lock" id="lockScreen">
+    <a class="brand" href="index.html"><span class="brand-mark">金</span><span><b>KINTSUGI</b><small>PANEL PRIVADO</small></span></a>
+    <div class="lock-card">
+      <p class="eyebrow"><span></span> ACCESO SEGURO</p>
+      <h1>Administración Kintsugi</h1>
+      <p>Ingresa con la cuenta autorizada en Supabase para editar el contenido del sitio.</p>
+      <form id="loginForm">
+        <label>Correo<input id="emailInput" type="email" autocomplete="username" required placeholder="tu@correo.com"></label>
+        <label>Contraseña<input id="passwordInput" type="password" autocomplete="current-password" minlength="6" required placeholder="••••••••"></label>
+        <button class="button button-primary" type="submit"><span>Entrar</span><b>↗</b></button>
+        <small id="loginError"></small>
+      </form>
+    </div>
+  </section>
+
+  <div class="admin-shell" id="adminShell" hidden>
+    <aside class="admin-sidebar">
+      <a class="brand" href="index.html"><span class="brand-mark">金</span><span><b>KINTSUGI</b><small>PANEL PRIVADO</small></span></a>
+      <nav><button class="admin-nav active" data-panel="summary"><span>概</span>Resumen</button><button class="admin-nav" data-panel="products"><span>飾</span>Joyería</button><button class="admin-nav" data-panel="tattoos"><span>墨</span>Tatuajes</button></nav>
+      <div class="sidebar-bottom"><a href="index.html" target="_blank">Ver sitio <span>↗</span></a><button id="logoutButton">Cerrar sesión</button></div>
+    </aside>
+    <main class="admin-main">
+      <header><div><small>ADMINISTRACIÓN</small><h2>Panel Kintsugi.</h2></div><span class="status-dot">Conectado a Supabase</span></header>
+      <section class="admin-panel active" id="summary">
+        <div class="panel-heading"><div><p class="eyebrow"><span></span> VISTA GENERAL</p><h3>Tu estudio, al día.</h3></div><p>Los cambios se guardan online y aparecen para todos los visitantes.</p></div>
+        <div class="stats"><article><small>JOYAS PUBLICADAS</small><strong id="productStat">0</strong><span>en el catálogo online</span></article><article><small>TATUAJES PUBLICADOS</small><strong id="tattooStat">0</strong><span>en el portfolio online</span></article><article class="accent"><small>WHATSAPP DE VENTAS</small><strong>68532799</strong><span>Bolivia · +591</span></article></div>
+        <div class="admin-note import-note"><b>Importar el portfolio actual</b><p>Usa este botón una sola vez después de conectar Supabase. Subirá las nueve fotografías incluidas en el diseño y las convertirá en publicaciones editables.</p><button class="button button-primary" id="importPortfolioButton" type="button">Importar 9 tatuajes <span>↗</span></button><small id="importStatus"></small></div>
+      </section>
+
+      <section class="admin-panel" id="products">
+        <div class="panel-heading"><div><p class="eyebrow"><span></span> CATÁLOGO</p><h3 id="productFormTitle">Nueva joya</h3></div><p>Agrega o edita una pieza. La imagen se guarda en Supabase Storage.</p></div>
+        <form class="content-form" id="productForm">
+          <input name="id" type="hidden"><input name="current_image_path" type="hidden">
+          <label>Nombre<input name="name" required placeholder="Ej. Yoru Clicker"></label>
+          <label>Precio en $<input name="price" required type="number" min="0" step="1" placeholder="65"></label>
+          <label>Categoría<select name="category"><option value="oreja">Oreja</option><option value="nariz">Nariz</option><option value="cuerpo">Cuerpo</option></select></label>
+          <label>Material<input name="material" required placeholder="Ej. Titanio"></label>
+          <label>Orden<input name="display_order" type="number" min="0" step="1" value="0"></label>
+          <label class="toggle-field"><input name="is_published" type="checkbox" checked><span>Visible en la tienda</span></label>
+          <label class="file-field">Foto<input name="image" type="file" accept="image/jpeg,image/png,image/webp"><span>Elegir imagen</span><small>Obligatoria al crear; opcional al editar</small></label>
+          <div class="form-actions"><button class="button button-primary" type="submit"><span id="productSubmitText">Publicar joya</span> <span>＋</span></button><button class="button button-ghost" id="cancelProductEdit" type="button" hidden>Cancelar</button></div>
+        </form>
+        <div class="admin-list" id="productList"></div>
+      </section>
+
+      <section class="admin-panel" id="tattoos">
+        <div class="panel-heading"><div><p class="eyebrow"><span></span> PORTFOLIO</p><h3 id="tattooFormTitle">Nuevo tatuaje</h3></div><p>Cada foto puede reemplazarse, reordenarse, ocultarse o eliminarse.</p></div>
+        <form class="content-form" id="tattooForm">
+          <input name="id" type="hidden"><input name="current_image_path" type="hidden">
+          <label>Nombre de la pieza<input name="title" required placeholder="Ej. Kitsune Nocturna"></label>
+          <label>Zona o categoría<input name="zone" required placeholder="Ej. Antebrazo"></label>
+          <label>Estilo<input name="style" required placeholder="Ej. Blackwork"></label>
+          <label>Texto alternativo<input name="alt_text" placeholder="Describe brevemente el tatuaje"></label>
+          <label>Formato<select name="layout"><option value="standard">Normal</option><option value="work-wide">Ancho</option><option value="work-tall">Alto</option></select></label>
+          <label>Orden<input name="display_order" type="number" min="0" step="1" value="0"></label>
+          <label class="toggle-field"><input name="is_published" type="checkbox" checked><span>Visible en el portfolio</span></label>
+          <label class="file-field">Foto<input name="image" type="file" accept="image/jpeg,image/png,image/webp"><span>Elegir imagen</span><small>Obligatoria al crear; opcional al editar</small></label>
+          <div class="form-actions"><button class="button button-primary" type="submit"><span id="tattooSubmitText">Publicar tatuaje</span> <span>＋</span></button><button class="button button-ghost" id="cancelTattooEdit" type="button" hidden>Cancelar</button></div>
+        </form>
+        <div class="admin-list" id="tattooList"></div>
+      </section>
+    </main>
+  </div>
+  <div class="toast" id="toast"></div>
+  <script src="config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
