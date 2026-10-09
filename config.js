@@ -1,4 +1,4 @@
 window.KINTSUGI_CONFIG={
-  supabaseUrl:'__SUPABASE_URL__',
-  supabaseAnonKey:'__SUPABASE_ANON_KEY__'
+  supabaseUrl:'https://objyguojvofrtqyreftw.supabase.co',
+  supabaseAnonKey:'sb_publishable_gbUT9KZg04ik82mwkhn7zA_sviAlYzO'
 };

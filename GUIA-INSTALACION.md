@@ -26,17 +26,13 @@ select id from auth.users where email = 'TU-CORREO@EJEMPLO.COM'
 on conflict (user_id) do nothing;
 ```
 
-6. En **Project Settings > API** copia:
-   - Project URL
-   - La clave pública `anon` o `publishable`
-
-No pongas una `service_role` en Netlify ni en el código del sitio.
+La URL `https://objyguojvofrtqyreftw.supabase.co` y su clave pública `publishable` ya están integradas en este paquete. No pongas una `service_role` en Netlify ni en el código del sitio.
 
 ## 2. Publicar en Netlify
 
 La forma más cómoda es subir esta carpeta a un repositorio de GitHub/GitLab y conectarlo desde **Add new site > Import an existing project** en Netlify.
 
-En **Site configuration > Environment variables**, crea:
+Puedes desplegar directamente: el paquete ya contiene la conexión pública. Opcionalmente, en **Site configuration > Environment variables** puedes crear estas variables si luego quieres sustituir la conexión sin editar archivos:
 
 ```text
 SUPABASE_URL = la Project URL de Supabase

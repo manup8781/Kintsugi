@@ -92,9 +92,12 @@ create policy "Admins update products" on public.products for update to authenti
 drop policy if exists "Admins delete products" on public.products;
 create policy "Admins delete products" on public.products for delete to authenticated using (public.is_admin());
 
+revoke all on public.admin_users from anon, authenticated;
+grant select on public.admin_users to authenticated;
+
+revoke all on public.portfolio_items, public.products from anon, authenticated;
 grant select on public.portfolio_items, public.products to anon, authenticated;
 grant insert, update, delete on public.portfolio_items, public.products to authenticated;
-grant select on public.admin_users to authenticated;
 
 insert into storage.buckets (id,name,public)
 values ('portfolio','portfolio',true),('products','products',true)
