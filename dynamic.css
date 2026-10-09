@@ -1,1 +1,2 @@
 .portfolio-loading,.portfolio-empty{grid-column:1/-1;display:grid;place-items:center;min-height:280px;border:1px solid rgba(232,223,210,.12);color:#a99a8d;font:italic 20px/1.5 var(--serif);text-align:center;padding:35px}
+.reveal{opacity:1!important;transform:none!important}html.animations-ready .reveal:not(.visible){opacity:0!important;transform:translateY(24px)!important}html.animations-ready .reveal.visible{opacity:1!important;transform:none!important}

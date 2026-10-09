@@ -1,7 +1,7 @@
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const config=window.KINTSUGI_CONFIG||{};
 const configured=Boolean(config.supabaseUrl&&config.supabaseAnonKey&&!config.supabaseUrl.includes('__')&&window.supabase?.createClient);
-const supabase=configured?window.supabase.createClient(config.supabaseUrl,config.supabaseAnonKey):null;
+const db=configured?window.supabase.createClient(config.supabaseUrl,config.supabaseAnonKey):null;
 const state={products:[],tattoos:[]};
 const safe=value=>String(value??'').replace(/[&<>'"]/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[char]));
 const initialPortfolio=[
@@ -17,27 +17,27 @@ const initialPortfolio=[
 ];
 
 function toast(message){const el=$('#toast');el.textContent=message;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2600)}
-function storageUrl(bucket,path){return path?supabase.storage.from(bucket).getPublicUrl(path).data.publicUrl:''}
+function storageUrl(bucket,path){return path?db.storage.from(bucket).getPublicUrl(path).data.publicUrl:''}
 function fileExtension(file){const fromName=file.name.split('.').pop()?.toLowerCase();return ['jpg','jpeg','png','webp'].includes(fromName)?fromName:(file.type==='image/png'?'png':file.type==='image/webp'?'webp':'jpg')}
 async function uploadImage(bucket,file,prefix='uploads'){
   if(!file||!file.size)throw new Error('Selecciona una imagen.');
   if(!file.type.startsWith('image/'))throw new Error('El archivo debe ser una imagen.');
   if(file.size>8*1024*1024)throw new Error('La imagen no puede superar 8 MB.');
   const path=`${prefix}/${crypto.randomUUID()}.${fileExtension(file)}`;
-  const {error}=await supabase.storage.from(bucket).upload(path,file,{contentType:file.type,cacheControl:'3600',upsert:false});
+  const {error}=await db.storage.from(bucket).upload(path,file,{contentType:file.type,cacheControl:'3600',upsert:false});
   if(error)throw error;
   return path;
 }
-async function deleteImage(bucket,path){if(path)await supabase.storage.from(bucket).remove([path])}
+async function deleteImage(bucket,path){if(path)await db.storage.from(bucket).remove([path])}
 
 $$('.admin-nav').forEach(btn=>btn.onclick=()=>{$$('.admin-nav').forEach(b=>b.classList.remove('active'));$$('.admin-panel').forEach(p=>p.classList.remove('active'));btn.classList.add('active');$('#'+btn.dataset.panel).classList.add('active')});
 $$('.file-field input').forEach(input=>input.onchange=()=>{const field=input.closest('.file-field');field.querySelector('span').textContent=input.files[0]?.name||'Elegir imagen';field.querySelector('small').textContent=input.files[0]?'Imagen lista para subir':'Obligatoria al crear; opcional al editar'});
 
 async function ensureAdmin(){
-  const {data:{session}}=await supabase.auth.getSession();
+  const {data:{session}}=await db.auth.getSession();
   if(!session)return false;
-  const {data,error}=await supabase.rpc('is_admin');
-  if(error||!data){await supabase.auth.signOut({scope:'local'});$('#loginError').textContent='Esta cuenta no está autorizada como administradora.';return false}
+  const {data,error}=await db.rpc('is_admin');
+  if(error||!data){await db.auth.signOut({scope:'local'});$('#loginError').textContent='Esta cuenta no está autorizada como administradora.';return false}
   return true;
 }
 async function showAdmin(){
@@ -45,23 +45,23 @@ async function showAdmin(){
   await loadAll();
 }
 async function initialize(){
-  if(!supabase){$('#loginError').textContent='Falta configurar Supabase en Netlify. Revisa la guía incluida.';$('#loginForm button').disabled=true;return}
+  if(!db){$('#loginError').textContent='Falta configurar Supabase en Netlify. Revisa la guía incluida.';$('#loginForm button').disabled=true;return}
   if(await ensureAdmin())await showAdmin();
 }
 $('#loginForm').onsubmit=async e=>{
   e.preventDefault();$('#loginError').textContent='';
   const button=e.target.querySelector('button');button.disabled=true;button.querySelector('span').textContent='Comprobando…';
-  const {error}=await supabase.auth.signInWithPassword({email:$('#emailInput').value.trim(),password:$('#passwordInput').value});
+  const {error}=await db.auth.signInWithPassword({email:$('#emailInput').value.trim(),password:$('#passwordInput').value});
   if(error){$('#loginError').textContent='No pudimos iniciar sesión. Revisa el correo y la contraseña.'}
   else if(await ensureAdmin())await showAdmin();
   button.disabled=false;button.querySelector('span').textContent='Entrar';
 };
-$('#logoutButton').onclick=async()=>{await supabase.auth.signOut({scope:'local'});location.reload()};
+$('#logoutButton').onclick=async()=>{await db.auth.signOut({scope:'local'});location.reload()};
 
 async function loadAll(){
   const [products,tattoos]=await Promise.all([
-    supabase.from('products').select('*').order('display_order',{ascending:true}).order('created_at',{ascending:false}),
-    supabase.from('portfolio_items').select('*').order('display_order',{ascending:true}).order('created_at',{ascending:false})
+    db.from('products').select('*').order('display_order',{ascending:true}).order('created_at',{ascending:false}),
+    db.from('portfolio_items').select('*').order('display_order',{ascending:true}).order('created_at',{ascending:false})
   ]);
   if(products.error||tattoos.error){toast('No pudimos cargar el contenido');console.error(products.error||tattoos.error);return}
   state.products=products.data||[];state.tattoos=tattoos.data||[];renderAll();
@@ -111,7 +111,7 @@ async function saveForm(type,form){
     }:{
       title:String(data.get('title')).trim(),zone:String(data.get('zone')).trim(),style:String(data.get('style')).trim(),alt_text:String(data.get('alt_text')).trim(),layout:String(data.get('layout')),display_order:Number(data.get('display_order'))||0,is_published:data.get('is_published')==='on',image_path:newPath||oldPath
     };
-    const result=id?await supabase.from(type==='products'?'products':'portfolio_items').update(payload).eq('id',id):await supabase.from(type==='products'?'products':'portfolio_items').insert(payload);
+    const result=id?await db.from(type==='products'?'products':'portfolio_items').update(payload).eq('id',id):await db.from(type==='products'?'products':'portfolio_items').insert(payload);
     if(result.error)throw result.error;
     if(newPath&&oldPath&&newPath!==oldPath)await deleteImage(bucket,oldPath);
     resetForm(type);await loadAll();toast(id?'Cambios guardados':'Publicación creada');
@@ -122,7 +122,7 @@ $('#tattooForm').onsubmit=async e=>{e.preventDefault();await saveForm('tattoos',
 async function removeItem(type,id){
   if(!confirm('¿Eliminar esta publicación y su imagen?'))return;
   const isProduct=type==='products',items=isProduct?state.products:state.tattoos,item=items.find(entry=>entry.id===id),table=isProduct?'products':'portfolio_items',bucket=isProduct?'products':'portfolio';
-  const {error}=await supabase.from(table).delete().eq('id',id);
+  const {error}=await db.from(table).delete().eq('id',id);
   if(error){console.error(error);toast('No pudimos eliminar la publicación');return}
   await deleteImage(bucket,item?.image_path);await loadAll();toast('Publicación eliminada');
 }
@@ -135,8 +135,8 @@ $('#importPortfolioButton').onclick=async()=>{
       const item=pending[index];status.textContent=`Subiendo ${index+1} de ${pending.length}: ${item.title}…`;
       const response=await fetch(item.asset);if(!response.ok)throw new Error(`No se encontró ${item.asset}`);const blob=await response.blob();
       const extension=item.asset.split('.').pop();const path=`initial/${item.seed_key}.${extension}`;
-      const uploaded=await supabase.storage.from('portfolio').upload(path,blob,{contentType:blob.type,cacheControl:'3600',upsert:true});if(uploaded.error)throw uploaded.error;
-      const {asset,...payload}=item;const saved=await supabase.from('portfolio_items').upsert({...payload,image_path:path,is_published:true},{onConflict:'seed_key'});if(saved.error)throw saved.error;
+      const uploaded=await db.storage.from('portfolio').upload(path,blob,{contentType:blob.type,cacheControl:'3600',upsert:true});if(uploaded.error)throw uploaded.error;
+      const {asset,...payload}=item;const saved=await db.from('portfolio_items').upsert({...payload,image_path:path,is_published:true},{onConflict:'seed_key'});if(saved.error)throw saved.error;
     }
     status.textContent='Importación completa. Ya puedes editar o reemplazar cualquiera de las fotos.';await loadAll();toast('Portfolio importado a Supabase');
   }catch(error){console.error(error);status.textContent='La importación se detuvo. Puedes volver a intentarlo sin duplicar lo ya subido.';toast(error.message||'No pudimos completar la importación');button.disabled=false}

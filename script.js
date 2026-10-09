@@ -1,7 +1,7 @@
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const config=window.KINTSUGI_CONFIG||{};
 const configured=Boolean(config.supabaseUrl&&config.supabaseAnonKey&&!config.supabaseUrl.includes('__')&&window.supabase?.createClient);
-const supabase=configured?window.supabase.createClient(config.supabaseUrl,config.supabaseAnonKey):null;
+const db=configured?window.supabase.createClient(config.supabaseUrl,config.supabaseAnonKey):null;
 const cart=[];
 const overlay=$('#overlay'),drawer=$('#cartDrawer'),modal=$('#bookingModal');
 const safe=value=>String(value??'').replace(/[&<>'"]/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[char]));
@@ -34,7 +34,7 @@ function bindLightbox(){
 }
 function storageUrl(bucket,path){
   if(!path)return '';
-  return supabase.storage.from(bucket).getPublicUrl(path).data.publicUrl;
+  return db.storage.from(bucket).getPublicUrl(path).data.publicUrl;
 }
 function observeNew(){$$('.reveal:not(.visible)').forEach(el=>observer.observe(el))}
 function renderPortfolio(items){
@@ -61,13 +61,13 @@ function renderRemoteProducts(items){
   bindProducts();observeNew();
 }
 async function loadRemoteContent(){
-  if(!supabase){
+  if(!db){
     renderPortfolio(localPortfolio);
     return;
   }
   const [portfolioResult,productsResult]=await Promise.all([
-    supabase.from('portfolio_items').select('id,title,zone,style,alt_text,image_path,layout,display_order').eq('is_published',true).order('display_order',{ascending:true}),
-    supabase.from('products').select('id,name,price,category,material,image_path,display_order').eq('is_published',true).order('display_order',{ascending:true})
+    db.from('portfolio_items').select('id,title,zone,style,alt_text,image_path,layout,display_order').eq('is_published',true).order('display_order',{ascending:true}),
+    db.from('products').select('id,name,price,category,material,image_path,display_order').eq('is_published',true).order('display_order',{ascending:true})
   ]);
   if(portfolioResult.error){console.error(portfolioResult.error);$('#portfolioGrid').innerHTML='<p class="portfolio-empty">No pudimos cargar el portfolio en este momento.</p>'}
   else renderPortfolio(portfolioResult.data||[]);
@@ -94,5 +94,6 @@ const menu=$('#mobileMenu'),menuBtn=$('#menuButton');menuBtn.onclick=()=>{const 
 $$('.mobile-menu a').forEach(a=>a.onclick=()=>{menu.classList.remove('open');menuBtn.classList.remove('open');document.body.style.overflow=''})
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeAll()});
 const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');observer.unobserve(entry.target)}}),{threshold:.12});
+document.documentElement.classList.add('animations-ready');
 $$('.reveal').forEach(el=>observer.observe(el));
 bindProducts();bindLightbox();renderCart();loadRemoteContent();
